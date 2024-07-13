@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://c7rdigf02pngk"]
+
+[ext_resource type="Texture2D" uid="uid://mrwtn24ywmfb" path="res://assets/creatures_packed_converted.png" id="1_3jm05"]
+[ext_resource type="Script" path="res://scripts/Bee.gd" id="1_7xwco"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jaeka"]
+atlas = ExtResource("1_3jm05")
+region = Rect2(0, 224, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4pft"]
+size = Vector2(12, 11)
+
+[node name="Bee" type="CharacterBody2D"]
+script = ExtResource("1_7xwco")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_jaeka")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_g4pft")
