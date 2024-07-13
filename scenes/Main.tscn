@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cj0x25ngoi8iq"]
+[gd_scene load_steps=16 format=3 uid="uid://cj0x25ngoi8iq"]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_e1rdd"]
 [ext_resource type="Texture2D" uid="uid://dppvkscbd15t0" path="res://assets/battle_packed_converted.png" id="1_g0yv5"]
@@ -1826,6 +1826,9 @@ size = Vector2(96, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duy8m"]
 size = Vector2(80, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_motkd"]
+size = Vector2(16, 16)
+
 [node name="Main" type="Node2D"]
 script = ExtResource("1_e1rdd")
 
@@ -1857,3 +1860,9 @@ position = Vector2(128, 0)
 shape = SubResource("RectangleShape2D_duy8m")
 
 [node name="BeeContainer" type="Node2D" parent="."]
+
+[node name="DropPlace" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DropPlace"]
+position = Vector2(88, 24)
+shape = SubResource("RectangleShape2D_motkd")
