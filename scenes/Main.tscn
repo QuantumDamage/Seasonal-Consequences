@@ -1821,10 +1821,10 @@ sources/2 = SubResource("TileSetAtlasSource_fuil2")
 sources/3 = SubResource("TileSetAtlasSource_2l336")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ppdrk"]
-size = Vector2(88, 16)
+size = Vector2(96, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duy8m"]
-size = Vector2(72, 16)
+size = Vector2(80, 16)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_e1rdd")
@@ -1833,7 +1833,7 @@ script = ExtResource("1_e1rdd")
 tile_set = SubResource("TileSet_7grne")
 format = 2
 layer_0/name = "ground"
-layer_0/tile_data = PackedInt32Array(0, 262147, 6, 1, 327683, 6, 2, 327683, 6, 3, 327683, 6, 4, 327683, 6, 5, 393219, 6, 6, 327683, 6, 7, 327683, 6, 8, 327683, 6, 9, 458755, 6)
+layer_0/tile_data = PackedInt32Array(0, 327683, 6, 1, 327683, 6, 2, 327683, 6, 3, 327683, 6, 4, 327683, 6, 5, 393219, 6, 6, 327683, 6, 7, 327683, 6, 8, 327683, 6, 9, 327683, 6)
 layer_1/name = "flora"
 layer_1/tile_data = PackedInt32Array()
 
@@ -1849,11 +1849,11 @@ position = Vector2(168, 0)
 [node name="Roof" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Roof"]
-position = Vector2(36, 0)
+position = Vector2(40, 0)
 shape = SubResource("RectangleShape2D_ppdrk")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Roof"]
-position = Vector2(132, 0)
+position = Vector2(128, 0)
 shape = SubResource("RectangleShape2D_duy8m")
 
 [node name="BeeContainer" type="Node2D" parent="."]

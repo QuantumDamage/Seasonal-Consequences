@@ -49,12 +49,13 @@ func spawn_initial_objects():
 	
 	while regenerate:
 		current_ponds = 0
+		tile_map.clear_layer(1)
 		for x in range(10):
 			for y in range(1,100):
 				# Generowanie trawy
 				tile_map.set_cell(0, Vector2i(x, y), 0, grass_tiles.pick_random(), get_random_transform())
 				
-				if y > 98:
+				if y > 97:
 					continue
 				if y >= 25:  # Generowanie jeziorek od 25 rzędu w dół
 					if randf() < POND_CHANCE and is_space_for_pond(x, y):
