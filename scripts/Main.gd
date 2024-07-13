@@ -10,7 +10,7 @@ extends Node2D
 @onready var bee_container = $BeeContainer
 var bee_scene = preload("res://scenes/Bee.tscn")
 const POND_SOURCE_ID = 0
-const POND_CHANCE = 0.003  # 3% szans na wygenerowanie jeziorka
+const POND_CHANCE = 0.003
 const BEE_CHANCE = 0.005
 const TREE_CHANCE = 0.1
 #var food_scene = preload("res://scenes/Food.tscn")
@@ -49,12 +49,13 @@ func spawn_initial_objects():
 	
 	while regenerate:
 		current_ponds = 0
+		tile_map.clear_layer(1)
 		for x in range(10):
 			for y in range(1,100):
 				# Generowanie trawy
 				tile_map.set_cell(0, Vector2i(x, y), 0, grass_tiles.pick_random(), get_random_transform())
 				
-				if y > 98:
+				if y > 97:
 					continue
 				if y >= 25:  # Generowanie jeziorek od 25 rzędu w dół
 					if randf() < POND_CHANCE and is_space_for_pond(x, y):
