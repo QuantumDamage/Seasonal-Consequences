@@ -10,7 +10,7 @@ extends Node2D
 @onready var bee_container = $BeeContainer
 var bee_scene = preload("res://scenes/Bee.tscn")
 const POND_SOURCE_ID = 0
-const POND_CHANCE = 0.003  # 3% szans na wygenerowanie jeziorka
+const POND_CHANCE = 0.003
 const BEE_CHANCE = 0.005
 const TREE_CHANCE = 0.1
 #var food_scene = preload("res://scenes/Food.tscn")
