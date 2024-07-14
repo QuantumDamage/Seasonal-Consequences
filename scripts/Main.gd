@@ -8,9 +8,12 @@ extends Node2D
 @onready var tile_map: TileMap = $TileMap
 
 @onready var bee_container = $BeeContainer
+@onready var hunter_container = $HunterContainer
 var bee_scene = preload("res://scenes/Bee.tscn")
+var hunter_scene = preload("res://scenes/Hunter.tscn")
 const POND_SOURCE_ID = 0
 const POND_CHANCE = 0.003
+const HUNTER_CHANCE = 0.004
 const BEE_CHANCE = 0.005
 const TREE_CHANCE = 0.1
 #var food_scene = preload("res://scenes/Food.tscn")
@@ -19,6 +22,12 @@ const TREE_CHANCE = 0.1
 
 func _ready():
 	spawn_initial_objects()
+	bear.connect("game_over", Callable(self, "_on_game_over"))
+
+func _on_game_over():
+	print("Game Over! Zatrzymuję grę.")
+	#get_tree().paused = true
+	# Tutaj możesz dodać kod do wyświetlenia ekranu końca gry, restartu poziomu itp.
 
 func _process(delta):
 	pass
@@ -41,6 +50,12 @@ func get_random_transform(horizontal_only=false) -> int:
 	]
 	return transforms[randi() % transforms.size()]
 
+func clear_enemies():
+	for bee in bee_container.get_children():
+		bee.queue_free()
+	for hunter in hunter_container.get_children():
+		hunter.queue_free()
+
 func spawn_initial_objects():
 	var ponds_needed = 3
 	var current_ponds
@@ -50,24 +65,27 @@ func spawn_initial_objects():
 	while regenerate:
 		current_ponds = 0
 		tile_map.clear_layer(1)
+		clear_enemies()
 		for x in range(10):
 			for y in range(1,100):
 				# Generowanie trawy
 				tile_map.set_cell(0, Vector2i(x, y), 0, grass_tiles.pick_random(), get_random_transform())
 				
-				if y > 97:
+				if y > 96:
 					continue
-				if y >= 25:  # Generowanie jeziorek od 25 rzędu w dół
+				elif y >= 15:  # Generowanie jeziorek od 25 rzędu w dół
 					if randf() < POND_CHANCE and is_space_for_pond(x, y):
 						spawn_pond(x, y)
 						current_ponds += 1
 						if current_ponds >= ponds_needed:
 							regenerate = false
+					elif randf() < HUNTER_CHANCE and is_space_free(x,y):
+						spawn_hunter(x,y) 
 					elif randf() < BEE_CHANCE and is_space_free(x, y):
 						spawn_bee(x, y)
 					elif randf() < TREE_CHANCE and is_space_for_tree(x, y):
 						spawn_tree(x, y)
-				else:
+				elif y>1:
 					if randf() < BEE_CHANCE and is_space_free(x, y):
 						spawn_bee(x, y)
 					elif randf() < TREE_CHANCE and is_space_for_tree(x, y):
@@ -111,6 +129,11 @@ func spawn_bee(x: int, y: int):
 	var bee_instance = bee_scene.instantiate()
 	bee_instance.position = tile_map.map_to_local(Vector2i(x, y))
 	bee_container.add_child(bee_instance)
+
+func spawn_hunter(x: int, y: int):
+	var hunter_instance = hunter_scene.instantiate()
+	hunter_instance.position = tile_map.map_to_local(Vector2i(x, y))
+	hunter_container.add_child(hunter_instance)
 
 func is_space_for_tree(x: int, y: int) -> bool:
 	return tile_map.get_cell_source_id(1, Vector2i(x, y)) == -1 and \

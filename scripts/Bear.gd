@@ -1,6 +1,7 @@
 extends CharacterBody2D
 var speed = 200
 @onready var sprite = $Sprite2D
+signal game_over
 
 func _physics_process(delta):
 	var input_vector = Vector2.ZERO
@@ -17,3 +18,11 @@ func _physics_process(delta):
 	
 	velocity = input_vector * speed
 	move_and_slide()
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		if collider.is_in_group("Enemies"):
+			emit_signal("game_over")
+			print("Game Over!")
+			# Tutaj możesz dodać kod do zatrzymania gry lub przejścia do ekranu końca gry
