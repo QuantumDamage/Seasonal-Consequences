@@ -10,7 +10,7 @@ region = Rect2(0, 224, 16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4pft"]
 size = Vector2(12, 11)
 
-[node name="Bee" type="CharacterBody2D"]
+[node name="Bee" type="CharacterBody2D" groups=["Enemies"]]
 script = ExtResource("1_7xwco")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cj0x25ngoi8iq"]
+[gd_scene load_steps=17 format=3 uid="uid://cj0x25ngoi8iq"]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_e1rdd"]
 [ext_resource type="Texture2D" uid="uid://dppvkscbd15t0" path="res://assets/battle_packed_converted.png" id="1_g0yv5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ch5b1gtko741p" path="res://assets/ski_packed_converted.png" id="3_v2vbe"]
 [ext_resource type="Texture2D" uid="uid://bmrp05cpvma1t" path="res://assets/town_packed_converted.png" id="4_eyj0s"]
 [ext_resource type="PackedScene" uid="uid://blcavevd3ec8i" path="res://scenes/Wall.tscn" id="6_rn1i6"]
+[ext_resource type="AudioStream" uid="uid://dsubyjlqm6bk1" path="res://assets/fsm-team-escp-early-bird.mp3" id="8_cvn3u"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6nu7n"]
 texture = ExtResource("1_g0yv5")
@@ -1861,8 +1862,14 @@ shape = SubResource("RectangleShape2D_duy8m")
 
 [node name="BeeContainer" type="Node2D" parent="."]
 
+[node name="HunterContainer" type="Node2D" parent="."]
+
 [node name="DropPlace" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DropPlace"]
 position = Vector2(88, 24)
 shape = SubResource("RectangleShape2D_motkd")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_cvn3u")
+autoplay = true
