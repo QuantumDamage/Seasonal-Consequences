@@ -70,7 +70,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: LinuxX11
-      - name: Deploy to Itch.io (Windows)
+      - name: Deploy to Itch.io (Linux)
         uses: manleydev/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_API_KEY }}
