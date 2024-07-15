@@ -1,5 +1,5 @@
 extends CharacterBody2D
-var speed = 200
+var speed = 150
 @onready var sprite = $Sprite2D
 signal game_over
 
@@ -21,7 +21,7 @@ func _physics_process(delta):
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
-		
+
 		if collider.is_in_group("Enemies"):
 			emit_signal("game_over")
 			print("Game Over!")

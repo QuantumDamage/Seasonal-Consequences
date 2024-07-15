@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://brtlavjyvtxoj"]
+[gd_scene load_steps=6 format=3 uid="uid://brtlavjyvtxoj"]
 
 [ext_resource type="Script" path="res://scripts/Hunter.gd" id="1_2tovh"]
 [ext_resource type="Texture2D" uid="uid://b4t30g8hv8so7" path="res://assets/dungeon_packed_converted.png" id="1_td34b"]
@@ -10,11 +10,7 @@ region = Rect2(64, 144, 16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pah67"]
 size = Vector2(12, 14)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p26n8"]
-size = Vector2(24, 26)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lnm1q"]
-size = Vector2(36, 38)
+[sub_resource type="CircleShape2D" id="CircleShape2D_rt4te"]
 
 [node name="Hunter" type="CharacterBody2D" groups=["Enemies"]]
 script = ExtResource("1_2tovh")
@@ -26,10 +22,9 @@ texture = SubResource("AtlasTexture_d51lh")
 position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_pah67")
 
-[node name="HuntingShape" type="CollisionShape2D" parent="."]
+[node name="HuntingArea" type="Area2D" parent="."]
 position = Vector2(0, 1)
-shape = SubResource("RectangleShape2D_p26n8")
 
-[node name="FocusShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
-shape = SubResource("RectangleShape2D_lnm1q")
+[node name="HuntingShape" type="CollisionShape2D" parent="HuntingArea"]
+scale = Vector2(6, 6)
+shape = SubResource("CircleShape2D_rt4te")
