@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ch5b1gtko741p" path="res://assets/ski_packed_converted.png" id="3_v2vbe"]
 [ext_resource type="Texture2D" uid="uid://bmrp05cpvma1t" path="res://assets/town_packed_converted.png" id="4_eyj0s"]
 [ext_resource type="PackedScene" uid="uid://blcavevd3ec8i" path="res://scenes/Wall.tscn" id="6_rn1i6"]
-[ext_resource type="AudioStream" uid="uid://dsubyjlqm6bk1" path="res://assets/fsm-team-escp-early-bird.mp3" id="8_cvn3u"]
+[ext_resource type="Script" path="res://scripts/BackgroundMusic.gd" id="9_lk64l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6nu7n"]
 texture = ExtResource("1_g0yv5")
@@ -1870,6 +1870,5 @@ shape = SubResource("RectangleShape2D_duy8m")
 position = Vector2(88, 24)
 shape = SubResource("RectangleShape2D_motkd")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_cvn3u")
-autoplay = true
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+script = ExtResource("9_lk64l")
