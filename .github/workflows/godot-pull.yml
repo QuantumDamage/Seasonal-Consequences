@@ -1,4 +1,4 @@
-name: Godot CI/CD Release Pipeline
+name: Godot CI/CD Pull Request Pipeline
 
 on: [pull_request]
 

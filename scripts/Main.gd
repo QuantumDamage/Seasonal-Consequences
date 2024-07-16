@@ -1,14 +1,13 @@
 extends Node2D
-
 @onready var bear = $Bear
 @onready var food_container = $FoodContainer
 @onready var obstacle_container = $ObstacleContainer
 @onready var enemy_container = $EnemyContainer
 @onready var ui = $UI
 @onready var tile_map: TileMap = $WorldTileMap
-
 @onready var bee_container = $BeeContainer
 @onready var hunter_container = $HunterContainer
+
 var bee_scene = preload("res://scenes/Bee.tscn")
 var hunter_scene = preload("res://scenes/Hunter.tscn")
 const POND_SOURCE_ID = 0
@@ -17,10 +16,14 @@ const HUNTER_CHANCE = 0.004
 const BEE_CHANCE = 0.005
 const TREE_CHANCE = 0.1
 
-
-#var food_scene = preload("res://scenes/Food.tscn")
-#var obstacle_scene = preload("res://scenes/Obstacle.tscn")
-#var enemy_scene = preload("res://scenes/Enemy.tscn")
+var current_season = 0  # 0: Spring, 1: Summer, 2: Autumn, 3: Winter
+var seasons = ["Spring", "Summer", "Autumn", "Winter"]
+var season_duration = 60  # 1 minutes per season
+var season_time = 0
+var bear_energy = 100
+var collected_food = 0
+var current_score = 0
+@onready var hud = $"Bear/HUD"
 
 func _ready():
 	spawn_initial_objects()
@@ -32,12 +35,12 @@ func _on_game_over():
 	# Tutaj możesz dodać kod do wyświetlenia ekranu końca gry, restartu poziomu itp.
 
 func _process(delta):
-	pass
+	season_time += delta
+	current_score = season_duration - season_time
+	hud.update_timer(current_score)
+	
 	if Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()
-	#print(bear.position)
-	#update_season()
-	#update_ui()
 
 func get_random_transform(horizontal_only=false) -> int:
 	if horizontal_only:

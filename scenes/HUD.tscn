@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://1bjd2hlvtjpg"]
+
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="1_cjfes"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g7n3y"]
+font_size = 8
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_cjfes")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "42"
+label_settings = SubResource("LabelSettings_g7n3y")
+horizontal_alignment = 1
