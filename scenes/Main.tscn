@@ -1,12 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://cj0x25ngoi8iq"]
+[gd_scene load_steps=19 format=3 uid="uid://cj0x25ngoi8iq"]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_e1rdd"]
 [ext_resource type="Texture2D" uid="uid://dppvkscbd15t0" path="res://assets/battle_packed_converted.png" id="1_g0yv5"]
 [ext_resource type="PackedScene" uid="uid://b5lu84tgbf4dv" path="res://scenes/Bear.tscn" id="1_yn174"]
 [ext_resource type="Texture2D" uid="uid://b4t30g8hv8so7" path="res://assets/dungeon_packed_converted.png" id="2_6oxno"]
+[ext_resource type="Material" uid="uid://bra7k2trnrxwa" path="res://shaders/SeasonalShaderMaterial.tres" id="2_idxrn"]
 [ext_resource type="Texture2D" uid="uid://ch5b1gtko741p" path="res://assets/ski_packed_converted.png" id="3_v2vbe"]
 [ext_resource type="Texture2D" uid="uid://bmrp05cpvma1t" path="res://assets/town_packed_converted.png" id="4_eyj0s"]
 [ext_resource type="PackedScene" uid="uid://blcavevd3ec8i" path="res://scenes/Wall.tscn" id="6_rn1i6"]
+[ext_resource type="Script" path="res://scripts/WorldTileMap.gd" id="7_0hok2"]
 [ext_resource type="Script" path="res://scripts/BackgroundMusic.gd" id="9_lk64l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6nu7n"]
@@ -1833,13 +1835,15 @@ size = Vector2(16, 16)
 [node name="Main" type="Node2D"]
 script = ExtResource("1_e1rdd")
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="WorldTileMap" type="TileMap" parent="."]
+material = ExtResource("2_idxrn")
 tile_set = SubResource("TileSet_7grne")
 format = 2
 layer_0/name = "ground"
 layer_0/tile_data = PackedInt32Array(0, 327683, 6, 1, 327683, 6, 2, 327683, 6, 3, 327683, 6, 4, 327683, 6, 5, 393219, 6, 6, 327683, 6, 7, 327683, 6, 8, 327683, 6, 9, 327683, 6)
 layer_1/name = "flora"
 layer_1/tile_data = PackedInt32Array()
+script = ExtResource("7_0hok2")
 
 [node name="Bear" parent="." instance=ExtResource("1_yn174")]
 position = Vector2(88, 8)
