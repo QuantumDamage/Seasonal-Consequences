@@ -1,4 +1,4 @@
-name: Godot CI/CD Pipeline
+name: Godot CI/CD Release Pipeline
 
 on: [workflow_dispatch]
 
