@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://b5lu84tgbf4dv"]
+[gd_scene load_steps=7 format=3 uid="uid://b5lu84tgbf4dv"]
 
 [ext_resource type="Script" path="res://scripts/Bear.gd" id="1_awws5"]
 [ext_resource type="Texture2D" uid="uid://mrwtn24ywmfb" path="res://assets/creatures_packed_converted.png" id="1_ebnyv"]
 [ext_resource type="Script" path="res://scripts/BearCamera.gd" id="3_mnggp"]
+[ext_resource type="PackedScene" uid="uid://1bjd2hlvtjpg" path="res://scenes/HUD.tscn" id="4_hublh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_blq77"]
 atlas = ExtResource("1_ebnyv")
@@ -23,3 +24,5 @@ shape = SubResource("RectangleShape2D_xpdgs")
 
 [node name="BearCamera" type="Camera2D" parent="."]
 script = ExtResource("3_mnggp")
+
+[node name="HUD" parent="." instance=ExtResource("4_hublh")]
