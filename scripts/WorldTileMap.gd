@@ -9,7 +9,7 @@ func change_season(new_season):
 	current_season = new_season
 	material.set_shader_parameter("season", current_season)
 	
-func _process(delta):
+func _process(_delta):
 
 	if Input.is_action_just_pressed("pora_roku"):
 		seasons += 1

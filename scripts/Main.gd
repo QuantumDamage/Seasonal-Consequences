@@ -1,9 +1,5 @@
 extends Node2D
 @onready var bear = $Bear
-@onready var food_container = $FoodContainer
-@onready var obstacle_container = $ObstacleContainer
-@onready var enemy_container = $EnemyContainer
-@onready var ui = $UI
 @onready var tile_map: TileMap = $WorldTileMap
 @onready var bee_container = $BeeContainer
 @onready var hunter_container = $HunterContainer
@@ -25,14 +21,20 @@ var collected_food = 0
 var current_score = 0
 @onready var hud = $"Bear/HUD"
 
+var season_requirements = {
+	"spring" : {"honey": 3, "fish": 2},
+	"summer" : {"honey": 4, "fish": 3},
+	"autumn" : {"honey": 5, "fish": 4}
+} # for now, enemies will be in the same numbers as collectables
+
 func _ready():
 	spawn_initial_objects()
+	spawn_enemies(0)
+	spawn_collecables(0)
 	bear.connect("game_over", Callable(self, "_on_game_over"))
 
 func _on_game_over():
-	print("Game Over! Zatrzymuję grę.")
-	#get_tree().paused = true
-	# Tutaj możesz dodać kod do wyświetlenia ekranu końca gry, restartu poziomu itp.
+	pass
 
 func _process(delta):
 	season_time += delta
@@ -43,13 +45,14 @@ func _process(delta):
 		get_tree().reload_current_scene()
 
 func get_random_transform(horizontal_only=false) -> int:
+	var transforms
 	if horizontal_only:
-		var transforms = [
+		transforms = [
 			0,
 			TileSetAtlasSource.TRANSFORM_FLIP_H,
 			]
 		return transforms[randi() % transforms.size()]
-	var transforms = [
+	transforms = [
 		0,
 		TileSetAtlasSource.TRANSFORM_FLIP_H,
 		TileSetAtlasSource.TRANSFORM_FLIP_V,
@@ -99,22 +102,11 @@ func spawn_initial_objects():
 						spawn_tree(x, y)
 			spawn_tree(x, 100)
 
-	
-	
-	#for x in range(10):
-		#for y in range(1,100):
-			#tile_map.set_cell(0, Vector2i(x, y), 0, tiles_list.pick_random(), get_random_transform())
-			#
-	#for x in range(10):
-		#for y in range(1,98):
-			#if randf() < TREE_CHANCE and is_space_for_tree(x, y):
-				#spawn_tree(x, y)
-		#spawn_tree(x, 100)
-	## Spawn pszczół
-	#for x in range(10):
-		#for y in range(1, 99):
-			#if randf() < BEE_CHANCE and is_space_free(x, y):
-				#spawn_bee(x, y)
+func spawn_enemies(season):
+	pass
+
+func spawn_collecables(season):
+	pass
 
 func is_space_for_pond(x: int, y: int) -> bool:
 	for dx in range(3):
@@ -151,11 +143,4 @@ func spawn_tree(x: int, y: int):
 	tile_map.set_cell(1, Vector2i(x, y), tree_source_id, Vector2i(4, 1), get_random_transform(true))
 	tile_map.set_cell(1, Vector2i(x, y-1), tree_source_id, Vector2i(4, 0), get_random_transform(true))
 	
-#func update_season():
-	#var current_season = GlobalGameState.current_season
-	## Zmiana tła i obiektów w zależności od pory roku
-#
-#func update_ui():
-	#ui.update_energy(GlobalGameState.bear_energy)
-	#ui.update_food(GlobalGameState.collected_food)
-	#ui.update_season(GlobalGameState.seasons[GlobalGameState.current_season])
+
