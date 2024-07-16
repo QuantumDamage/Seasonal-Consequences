@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://blggkd0l64bg7"]
+
+[ext_resource type="Script" path="res://scripts/Beehive.gd" id="1_4jyia"]
+[ext_resource type="Texture2D" uid="uid://bmrp05cpvma1t" path="res://assets/town_packed_converted.png" id="1_tj67i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hcp6t"]
+atlas = ExtResource("1_tj67i")
+region = Rect2(160, 112, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uf2tn"]
+size = Vector2(16, 16)
+
+[node name="Beehive" type="Area2D"]
+script = ExtResource("1_4jyia")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_hcp6t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uf2tn")

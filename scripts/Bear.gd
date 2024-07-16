@@ -2,6 +2,28 @@ extends CharacterBody2D
 var speed = 150
 @onready var sprite = $Sprite2D
 signal game_over
+var has_collectable = false
+var collectable
+
+func pickup_beehive():
+	if not has_collectable:
+		has_collectable = true
+		collectable = "beehive"
+		update_appearance(collectable)
+		return true
+	else:
+		print("Can't carry any more stuff")
+		return false
+
+func drop_stuff():
+	update_appearance("none")
+	has_collectable = false
+
+func update_appearance(thing):
+	if thing == "beehive":
+		$Beehive.visible = true
+	if thing == "none":
+		$Beehive.visible = false
 
 func _physics_process(_delta):
 	var input_vector = Vector2.ZERO
@@ -24,5 +46,5 @@ func _physics_process(_delta):
 
 		if collider.is_in_group("Enemies"):
 			emit_signal("game_over")
-			print("Game Over!")
+			#print("Game Over!")
 			# Tutaj możesz dodać kod do zatrzymania gry lub przejścia do ekranu końca gry

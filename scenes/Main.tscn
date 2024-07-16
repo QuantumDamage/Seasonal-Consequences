@@ -1868,6 +1868,10 @@ shape = SubResource("RectangleShape2D_duy8m")
 
 [node name="HunterContainer" type="Node2D" parent="."]
 
+[node name="Beehivecontainer" type="Node2D" parent="."]
+
+[node name="FishContainer" type="Node2D" parent="."]
+
 [node name="DropPlace" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DropPlace"]
