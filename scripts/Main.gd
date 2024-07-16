@@ -5,7 +5,7 @@ extends Node2D
 @onready var obstacle_container = $ObstacleContainer
 @onready var enemy_container = $EnemyContainer
 @onready var ui = $UI
-@onready var tile_map: TileMap = $TileMap
+@onready var tile_map: TileMap = $WorldTileMap
 
 @onready var bee_container = $BeeContainer
 @onready var hunter_container = $HunterContainer
@@ -16,6 +16,8 @@ const POND_CHANCE = 0.003
 const HUNTER_CHANCE = 0.004
 const BEE_CHANCE = 0.005
 const TREE_CHANCE = 0.1
+
+
 #var food_scene = preload("res://scenes/Food.tscn")
 #var obstacle_scene = preload("res://scenes/Obstacle.tscn")
 #var enemy_scene = preload("res://scenes/Enemy.tscn")
@@ -31,6 +33,8 @@ func _on_game_over():
 
 func _process(delta):
 	pass
+	if Input.is_action_just_pressed("restart"):
+		get_tree().reload_current_scene()
 	#print(bear.position)
 	#update_season()
 	#update_ui()
