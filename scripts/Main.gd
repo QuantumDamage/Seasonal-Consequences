@@ -32,7 +32,14 @@ var season_requirements = {
 const BEEHIVE_CHANCE = 0.02
 const FISH_CHANCE = 0.02
 
+var beehive_display
+
 func _ready():
+	beehive_display = $CollectablesDisplayManager
+	beehive_display.position = Vector2(0, 0)  # Dostosuj pozycję
+	add_child(beehive_display)
+	beehive_display.initialize(3)  # Inicjalizacja z 3 slotami (lub inną liczbą)
+	
 	spawn_initial_objects()
 	spawn_enemies(0)
 	spawn_collecables(0)
@@ -41,7 +48,11 @@ func _ready():
 
 func _on_drop_place_entered(body):
 	if body.is_in_group("bear"):
+		if body.has_collectable == true:
+			beehive_display.add_beehive()	
 		bear.drop_stuff()
+		
+	
 	
 
 func _on_game_over():
