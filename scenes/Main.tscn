@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cj0x25ngoi8iq"]
+[gd_scene load_steps=21 format=3 uid="uid://cj0x25ngoi8iq"]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_e1rdd"]
 [ext_resource type="Texture2D" uid="uid://dppvkscbd15t0" path="res://assets/battle_packed_converted.png" id="1_g0yv5"]
@@ -10,7 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://blcavevd3ec8i" path="res://scenes/Wall.tscn" id="6_rn1i6"]
 [ext_resource type="Script" path="res://scripts/WorldTileMap.gd" id="7_0hok2"]
 [ext_resource type="Script" path="res://scripts/BackgroundMusic.gd" id="9_lk64l"]
-[ext_resource type="Script" path="res://scripts/CollectablesDisplayManager.gd" id="11_68jkx"]
+[ext_resource type="PackedScene" uid="uid://butkbjv3nm83d" path="res://scenes/Score.tscn" id="9_o7cn6"]
+[ext_resource type="PackedScene" uid="uid://c8q2p7pu2c8bm" path="res://scenes/CollectablesDisplayManager.tscn" id="12_kg0i1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6nu7n"]
 texture = ExtResource("1_g0yv5")
@@ -1849,6 +1850,8 @@ script = ExtResource("7_0hok2")
 [node name="Bear" parent="." instance=ExtResource("1_yn174")]
 position = Vector2(88, 8)
 
+[node name="Score" parent="Bear" instance=ExtResource("9_o7cn6")]
+
 [node name="Wall" parent="." instance=ExtResource("6_rn1i6")]
 position = Vector2(-24, 0)
 
@@ -1882,5 +1885,4 @@ shape = SubResource("RectangleShape2D_motkd")
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 script = ExtResource("9_lk64l")
 
-[node name="CollectablesDisplayManager" type="Node2D" parent="."]
-script = ExtResource("11_68jkx")
+[node name="CollectablesDisplayManager" parent="." instance=ExtResource("12_kg0i1")]

@@ -5,7 +5,9 @@ extends Node2D
 @onready var hunter_container = $HunterContainer
 @onready var beehive_container = $Beehivecontainer
 @onready var fish_container = $FishContainer
+@onready var music_player = $BackgroundMusic
 
+@onready var score_scene = $Bear/Score/CanvasLayer
 var bee_scene = preload("res://scenes/Bee.tscn")
 var hunter_scene = preload("res://scenes/Hunter.tscn")
 var beehive_scene = preload("res://scenes/Beehive.tscn")
@@ -15,56 +17,142 @@ const HUNTER_CHANCE = 0.004
 const BEE_CHANCE = 0.005
 const TREE_CHANCE = 0.1
 
+var game_over = false
+var paused = false
 var current_season = 0  # 0: Spring, 1: Summer, 2: Autumn, 3: Winter
 var seasons = ["spring", "summer", "autumn", "winter"]
 var season_duration = 60  # 1 minutes per season
 var season_time = 0
 var bear_energy = 100
 var collected_food = 0
-var current_score = 0
+var current_score = INF
 @onready var hud = $"Bear/HUD"
+@onready var beehive_display = $CollectablesDisplayManager
+
+var scores = {
+	0: 0,
+	1: 0,
+	2: 0,
+}
 
 var season_requirements = {
-	"spring" : {"beehive": 3, "fish": 2},
-	"summer" : {"beehive": 4, "fish": 3},
-	"autumn" : {"beehive": 5, "fish": 4}
+	"spring" : {"beehive": 1, "fish": 2},
+	"summer" : {"beehive": 2, "fish": 3},
+	"autumn" : {"beehive": 3, "fish": 4},
+	#"winter" : {"beehive": 0, "fish": 0},
+	#"spring" : {"beehive": 3, "fish": 2},
+	#"summer" : {"beehive": 4, "fish": 3},
+	#"autumn" : {"beehive": 5, "fish": 4}
 } # for now, enemies will be in the same numbers as collectables
 const BEEHIVE_CHANCE = 0.02
 const FISH_CHANCE = 0.02
+var CollectablesDisplayManager = preload("res://scenes/CollectablesDisplayManager.tscn")
 
-var beehive_display
+func start_season(season):
+	tile_map.change_season(season)
+	spawn_display(season)
+	spawn_enemies(season)
+	spawn_collecables(season)
+	if season == 3:
+		bear.position = tile_map.map_to_local(Vector2(5, 99))
+		game_over = true
+	music_player.start_music(season)
+
+func spawn_display(season):
+	# Usuń istniejący display, jeśli istnieje
+	if beehive_display:
+		beehive_display.queue_free()
+	# Stwórz nowy display
+	if season == 3:
+		return
+	beehive_display = CollectablesDisplayManager.instantiate()
+	# Ustaw pozycję (dostosuj według potrzeb)
+	beehive_display.position = Vector2(0, 0)
+	# Dodaj do sceny
+	add_child(beehive_display)
+	# Inicjalizuj z odpowiednią liczbą uli dla danego sezonu
+	var how_much_beehive = season_requirements[seasons[season]]["beehive"]
+	beehive_display.initialize(how_much_beehive)
+	# Opcjonalnie: wymusz aktualizację wyświetlania
+	#beehive_display.update()
 
 func _ready():
-	beehive_display = $CollectablesDisplayManager
-	beehive_display.position = Vector2(0, 0)  # Dostosuj pozycję
-	add_child(beehive_display)
-	beehive_display.initialize(3)  # Inicjalizacja z 3 slotami (lub inną liczbą)
-	
+	score_scene.hide()
 	spawn_initial_objects()
-	spawn_enemies(0)
-	spawn_collecables(0)
+	start_season(0)
 	bear.connect("game_over", Callable(self, "_on_game_over"))
 	$DropPlace.connect("body_entered", Callable(self, "_on_drop_place_entered"))
 
 func _on_drop_place_entered(body):
 	if body.is_in_group("bear"):
+		if game_over:
+			var end_game_scene = load("res://scenes/EndGame.tscn").instantiate()
+			var score = scores[0] + scores[1] + scores[2]
+			end_game_scene.set_score(score)  # Zakładając, że masz zmienną 'score'
+			get_tree().root.add_child(end_game_scene)
+			get_tree().current_scene.queue_free()
 		if body.has_collectable == true:
-			beehive_display.add_beehive()	
-		bear.drop_stuff()
+			beehive_display.add_beehive()
+			collected_food += 1
+			bear.drop_stuff()
 		
 	
 	
 
 func _on_game_over():
 	pass
-
+	
+func show_score():
+	var sum = scores[0] + scores[1] + scores [2]
+	if scores[0] != 0:
+		score_scene.get_node("Spring").show()
+		score_scene.get_node("SpringScore").show()
+		score_scene.update_score("SpringScore", scores[0])
+	if scores[1] != 0:
+		score_scene.get_node("Summer").show()
+		score_scene.get_node("SummerScore").show()
+		score_scene.update_score("SummerScore", scores[1])
+	if scores[2] != 0:
+		score_scene.get_node("Autumn").show()
+		score_scene.get_node("AutumnScore").show()
+		score_scene.update_score("AutumnScore", scores[2])
+	if sum != 0:
+		score_scene.get_node("Total").show()
+		score_scene.get_node("TotalScore").show()
+		score_scene.update_score("TotalScore", sum)
+	score_scene.show()
+	
 func _process(delta):
-	season_time += delta
-	current_score = season_duration - season_time
-	hud.update_timer(current_score)
+	if game_over:
+		var sum = scores[0] + scores[1] + scores [2]
+		hud.update_timer(sum)
+	else:
+		season_time += delta
+		if current_score > 0:
+			current_score = season_duration - season_time
+			hud.update_timer(current_score)
 	
 	if Input.is_action_just_pressed("restart"):
 		get_tree().reload_current_scene()
+		
+	if not game_over: 
+		if collected_food == season_requirements[seasons[current_season]]["beehive"]:
+			scores[current_season] = int(current_score)
+			collected_food = 0
+			hud.hide()
+			show_score()
+			paused = true
+			Engine.time_scale = 0
+		
+	if Input.is_action_just_pressed("ui_select") and paused:
+		current_season += 1
+		season_time = 0
+		score_scene.hide()
+		start_season(0)
+		start_season(current_season)
+		hud.show()
+		paused = false
+		Engine.time_scale = 1
 
 func get_random_transform(horizontal_only=false) -> int:
 	var transforms
@@ -97,7 +185,7 @@ func spawn_initial_objects():
 	while regenerate:
 		current_ponds = 0
 		tile_map.clear_layer(1)
-		clear_enemies()
+		#clear_enemies()
 		for x in range(10):
 			for y in range(1,100):
 				# Generowanie trawy
@@ -111,29 +199,57 @@ func spawn_initial_objects():
 						current_ponds += 1
 						if current_ponds >= ponds_needed:
 							regenerate = false
-					elif randf() < HUNTER_CHANCE and is_space_free(x,y):
-						spawn_hunter(x,y) 
-					elif randf() < BEE_CHANCE and is_space_free(x, y):
-						spawn_bee(x, y)
+					#elif randf() < HUNTER_CHANCE and is_space_free(x,y):
+						#spawn_hunter(x,y) 
+					#elif randf() < BEE_CHANCE and is_space_free(x, y):
+						#spawn_bee(x, y)
 					elif randf() < TREE_CHANCE and is_space_for_tree(x, y):
 						spawn_tree(x, y)
 				elif y>1:
-					if randf() < BEE_CHANCE and is_space_free(x, y):
-						spawn_bee(x, y)
-					elif randf() < TREE_CHANCE and is_space_for_tree(x, y):
+					#if randf() < BEE_CHANCE and is_space_free(x, y):
+						#spawn_bee(x, y)
+					if randf() < TREE_CHANCE and is_space_for_tree(x, y):
 						spawn_tree(x, y)
 			spawn_tree(x, 100)
 
 func spawn_enemies(season):
-	pass
-
+	if season == 3:
+		clear_enemies()
+		return
+	var how_much_bee = season_requirements[seasons[season]]["beehive"]
+	var how_much_hunter = season_requirements[seasons[season]]["fish"]
+	var current_bee = 0
+	var current_hunter = 0
+	var regenerate = true
+	while regenerate:
+		clear_enemies()
+		current_bee = 0
+		current_hunter = 0 
+		for x in range(10):
+			for y in range(1,100):
+				if regenerate and randf() < HUNTER_CHANCE and is_space_free(x, y):
+					if current_hunter < how_much_hunter:
+						spawn_hunter(x, y)
+						current_hunter += 1
+						print("spawned hunter: ", current_hunter)
+				elif regenerate and randf() < BEE_CHANCE and is_space_free(x, y):
+					if current_bee < how_much_bee:
+						spawn_bee(x, y)
+						current_bee += 1
+				if (current_hunter == how_much_hunter) and (current_bee == how_much_bee):
+					regenerate = false
+	
 func spawn_collecables(season):
+	if season == 3:
+		clear_collecables()
+		return
 	var how_much_beehive = season_requirements[seasons[season]]["beehive"]
 	var current_beehive = 0
 	var how_much_fish = season_requirements[seasons[season]]["fish"]
 	var regenerate = true
 	while regenerate:
 		clear_collecables()
+		current_beehive = 0
 		for x in range(10):
 			for y in range(1,100):
 				if regenerate and randf() < BEEHIVE_CHANCE and is_space_free(x, y):

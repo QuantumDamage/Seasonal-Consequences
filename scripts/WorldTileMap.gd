@@ -1,6 +1,6 @@
 extends TileMap
 var seasons = 0
-var current_season = 0.0  # 0: wiosna, 1: lato, 2: jesień, 3: zima
+var current_season = 0  # 0: wiosna, 1: lato, 2: jesień, 3: zima
 
 func _ready():
 	material.set_shader_parameter("season", current_season)

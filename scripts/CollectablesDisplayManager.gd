@@ -9,6 +9,8 @@ var beehive_slots = []
 var beehive_texture = preload("res://assets/town_packed_converted.png")
 
 func initialize(n: int):
+	#collected_beehives = 0
+	#beehive_slots = []
 	BEEHIVE_SLOTS = n
 	for i in range(BEEHIVE_SLOTS):
 		var slot = Sprite2D.new()

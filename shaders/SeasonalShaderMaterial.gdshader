@@ -1,17 +1,17 @@
 shader_type canvas_item;
 
-uniform float season : hint_range(0, 3); // 0: wiosna, 1: lato, 2: jesień, 3: zima
+uniform int season : hint_range(0, 3); // 0: wiosna, 1: lato, 2: jesień, 3: zima
 
 void fragment() {
     vec4 tex_color = texture(TEXTURE, UV);
     
     // Modyfikacje kolorów dla każdej pory roku
-    if (season < 1.1) { // Wiosna
+    if (season == 0) { // Wiosna
         // Możesz zostawić oryginalny kolor
-    } else if (season < 2.1) { // Lato
+    } else if (season == 1) { // Lato
         tex_color.r *= 0.8; // Zmniejsz czerwony dla ciemniejszej zieleni
         tex_color.g *= 1.2; // Zwiększ zielony
-    } else if (season < 3.1) { // Jesień
+    } else if (season == 2) { // Jesień
         tex_color.r *= 1.2; // Zwiększ czerwony
         tex_color.g *= 0.8; // Zmniejsz zielony
     } else { // Zima
