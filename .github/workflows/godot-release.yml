@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Cache import assets
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .godot/imported/
           key: import-assets-${{ runner.os }}-${{ github.sha }}
@@ -24,7 +24,7 @@ jobs:
     needs: import-assets
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: .godot/imported/
           key: import-assets-${{ runner.os }}-${{ github.sha }}
