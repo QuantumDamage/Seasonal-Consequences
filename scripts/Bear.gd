@@ -4,7 +4,9 @@ var speed = 150
 var ice_speed = 100  # Prędkość na lodzie
 var slide_friction = 0.98  # Współczynnik tarcia dla efektu ślizgania
 var ice_acceleration = 500  # Przyspieszenie na lodzie
-var bounce_factor = 0.5  # Współczynnik odbicia
+var bounce_factor = 0.8  # Współczynnik odbicia
+var min_bounce_speed = 50  # Minimalna prędkość po odbiciu
+var momentum_preservation = 0.7  # Współczynnik zachowania pędu przy odbiciu
 
 @onready var sprite = $Sprite2D
 
@@ -45,16 +47,9 @@ func _physics_process(delta):
 	else:
 		ice_movement(input_vector, delta)
 	
-	move_and_slide()
+	handle_collisions()
 	
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		#var collider = collision.get_collider()
-		#if collider.is_in_group("Enemies"):
-			#emit_signal("game_over")
-			#set_game_over(true)
-		if is_game_over:
-			bounce(collision.get_normal())
+	move_and_slide()
 	
 	update_sprite_direction()
 
@@ -77,9 +72,31 @@ func ice_movement(input_vector, delta):
 	# Ogranicz maksymalną prędkość
 	velocity = velocity.limit_length(ice_speed)
 
+func handle_collisions():
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		if is_game_over:
+			bounce(collision.get_normal())
+
 func bounce(collision_normal):
-	# Odbij prędkość względem normalnej kolizji
-	velocity = velocity.bounce(collision_normal) * bounce_factor
+	# Oblicz składową prędkości równoległą do powierzchni kolizji
+	var parallel_velocity = velocity.project(collision_normal.orthogonal())
+	
+	# Oblicz składową prędkości prostopadłą do powierzchni kolizji
+	var perpendicular_velocity = velocity.project(collision_normal)
+	
+	# Odbij tylko składową prostopadłą
+	perpendicular_velocity = -perpendicular_velocity * bounce_factor
+	
+	# Połącz składowe z powrotem, zachowując część oryginalnego pędu
+	velocity = parallel_velocity * momentum_preservation + perpendicular_velocity
+	
+	# Zapewnij minimalną prędkość po odbiciu
+	if velocity.length() < min_bounce_speed:
+		velocity = velocity.normalized() * min_bounce_speed
+	
+	# Dodaj małe przesunięcie, aby zapobiec "przyklejaniu"
+	position += collision_normal * 1
 
 func update_sprite_direction():
 	if velocity.x < 0:
