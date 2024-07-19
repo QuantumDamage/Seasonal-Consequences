@@ -19,7 +19,7 @@ const TREE_CHANCE = 0.1
 
 var game_over = false
 var paused = false
-var current_season = 0  # 0: Spring, 1: Summer, 2: Autumn, 3: Winter
+var current_season = 2  # 0: Spring, 1: Summer, 2: Autumn, 3: Winter
 var seasons = ["spring", "summer", "autumn", "winter"]
 var season_duration = 60  # 1 minutes per season
 var season_time = 0
@@ -38,7 +38,7 @@ var scores = {
 var season_requirements = {
 	"spring" : {"beehive": 1, "fish": 2},
 	"summer" : {"beehive": 2, "fish": 3},
-	"autumn" : {"beehive": 3, "fish": 4},
+	"autumn" : {"beehive": 1, "fish": 4},
 	#"winter" : {"beehive": 0, "fish": 0},
 	#"spring" : {"beehive": 3, "fish": 2},
 	#"summer" : {"beehive": 4, "fish": 3},
@@ -55,7 +55,9 @@ func start_season(season):
 	spawn_collecables(season)
 	if season == 3:
 		bear.position = tile_map.map_to_local(Vector2(5, 99))
+		print(bear)
 		game_over = true
+		bear.set_game_over(true)
 	music_player.start_music(season)
 
 func spawn_display(season):
@@ -79,7 +81,7 @@ func spawn_display(season):
 func _ready():
 	score_scene.hide()
 	spawn_initial_objects()
-	start_season(0)
+	start_season(current_season)
 	bear.connect("game_over", Callable(self, "_on_game_over"))
 	$DropPlace.connect("body_entered", Callable(self, "_on_drop_place_entered"))
 
@@ -125,7 +127,7 @@ func show_score():
 func _process(delta):
 	if game_over:
 		var sum = scores[0] + scores[1] + scores [2]
-		hud.update_timer(sum)
+		hud.update_timer("Slide to home")
 	else:
 		season_time += delta
 		if current_score > 0:

@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://blcavevd3ec8i" path="res://scenes/Wall.tscn" id="6_rn1i6"]
 [ext_resource type="Script" path="res://scripts/WorldTileMap.gd" id="7_0hok2"]
 [ext_resource type="Script" path="res://scripts/BackgroundMusic.gd" id="9_lk64l"]
-[ext_resource type="PackedScene" uid="uid://butkbjv3nm83d" path="res://scenes/Score.tscn" id="9_o7cn6"]
+[ext_resource type="PackedScene" uid="uid://b664ikuwem2qw" path="res://scenes/Score.tscn" id="9_o7cn6"]
 [ext_resource type="PackedScene" uid="uid://c8q2p7pu2c8bm" path="res://scenes/CollectablesDisplayManager.tscn" id="12_kg0i1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6nu7n"]
