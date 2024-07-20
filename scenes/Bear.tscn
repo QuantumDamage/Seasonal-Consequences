@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b5lu84tgbf4dv"]
+[gd_scene load_steps=15 format=3 uid="uid://b5lu84tgbf4dv"]
 
 [ext_resource type="Script" path="res://scripts/Bear.gd" id="1_awws5"]
 [ext_resource type="Texture2D" uid="uid://mrwtn24ywmfb" path="res://assets/creatures_packed_converted.png" id="1_ebnyv"]
@@ -14,6 +14,32 @@ region = Rect2(48, 256, 16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xpdgs"]
 size = Vector2(12, 14)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_anwgi"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(200, 200, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+gravity = Vector3(0, 98, 0)
+color = Color(0, 0, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_xkvyl"]
+offsets = PackedFloat32Array(0, 0.491803, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.598361, 0.598361, 0.598361, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8r8fh"]
+gradient = SubResource("Gradient_xkvyl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rq4ie"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(150, 150, 1)
+direction = Vector3(-1, 1, 0)
+spread = 10.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_8r8fh")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tvh0u"]
 atlas = ExtResource("5_3etxh")
@@ -31,6 +57,18 @@ shape = SubResource("RectangleShape2D_xpdgs")
 
 [node name="BearCamera" type="Camera2D" parent="."]
 script = ExtResource("3_mnggp")
+
+[node name="Rain" type="GPUParticles2D" parent="BearCamera"]
+visible = false
+amount = 200
+process_material = SubResource("ParticleProcessMaterial_anwgi")
+lifetime = 3.0
+
+[node name="Snow" type="GPUParticles2D" parent="BearCamera"]
+visible = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_rq4ie")
+lifetime = 5.0
 
 [node name="HUD" parent="." instance=ExtResource("4_hublh")]
 

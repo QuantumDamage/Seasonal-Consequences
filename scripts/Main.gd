@@ -1,5 +1,6 @@
 extends Node2D
 @onready var bear = $Bear
+@onready var bear_camera = $Bear/BearCamera
 @onready var tile_map: TileMap = $WorldTileMap
 @onready var bee_container = $BeeContainer
 @onready var hunter_container = $HunterContainer
@@ -53,7 +54,11 @@ func start_season(season):
 	spawn_display(season)
 	spawn_enemies(season)
 	spawn_collecables(season)
+	if season == 2:
+		bear_camera.get_node("Rain").show()
 	if season == 3:
+		bear_camera.get_node("Rain").hide()
+		bear_camera.get_node("Snow").show()
 		bear.position = tile_map.map_to_local(Vector2(5, 99))
 		print(bear)
 		game_over = true
