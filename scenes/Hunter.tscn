@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://brtlavjyvtxoj"]
+[gd_scene load_steps=7 format=3 uid="uid://brtlavjyvtxoj"]
 
 [ext_resource type="Script" path="res://scripts/Hunter.gd" id="1_2tovh"]
 [ext_resource type="Texture2D" uid="uid://b4t30g8hv8so7" path="res://assets/dungeon_packed_converted.png" id="1_td34b"]
+[ext_resource type="AudioStream" uid="uid://ciqyve3qc0ks8" path="res://assets/sfx/roar.wav" id="3_n3oyf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d51lh"]
 atlas = ExtResource("1_td34b")
@@ -28,3 +29,7 @@ position = Vector2(0, 1)
 [node name="HuntingShape" type="CollisionShape2D" parent="HuntingArea"]
 scale = Vector2(6, 6)
 shape = SubResource("CircleShape2D_rt4te")
+
+[node name="RoarSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_n3oyf")
+volume_db = 10.0

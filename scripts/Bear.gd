@@ -20,7 +20,9 @@ func pickup_beehive():
 	if not has_collectable:
 		has_collectable = true
 		collectable = "beehive"
+		
 		update_appearance(collectable)
+		$Pickup.play()
 		return true
 	else:
 		print("Can't carry any more stuff")
@@ -28,6 +30,7 @@ func pickup_beehive():
 
 func drop_stuff():
 	update_appearance("none")
+	$Drop.play()
 	has_collectable = false
 
 func update_appearance(thing):

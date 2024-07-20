@@ -10,6 +10,7 @@ var score = 0
 func _ready():
 	$CanvasLayer/Label2.text = str(score)
 	print("Dddddddddddddddddddddddddddd")
+	$AudioStreamPlayer2D.play()
 
 func set_score(new_score):
 	score = new_score

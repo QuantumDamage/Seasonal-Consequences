@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://b5lu84tgbf4dv"]
+[gd_scene load_steps=11 format=3 uid="uid://b5lu84tgbf4dv"]
 
 [ext_resource type="Script" path="res://scripts/Bear.gd" id="1_awws5"]
 [ext_resource type="Texture2D" uid="uid://mrwtn24ywmfb" path="res://assets/creatures_packed_converted.png" id="1_ebnyv"]
 [ext_resource type="Script" path="res://scripts/BearCamera.gd" id="3_mnggp"]
 [ext_resource type="PackedScene" uid="uid://1bjd2hlvtjpg" path="res://scenes/HUD.tscn" id="4_hublh"]
 [ext_resource type="Texture2D" uid="uid://bmrp05cpvma1t" path="res://assets/town_packed_converted.png" id="5_3etxh"]
+[ext_resource type="AudioStream" uid="uid://dr2h1ukpo7tm4" path="res://assets/sfx/down.wav" id="6_qi6mc"]
+[ext_resource type="AudioStream" uid="uid://d0k3fhnqc3ae4" path="res://assets/sfx/up.wav" id="7_bek3h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_blq77"]
 atlas = ExtResource("1_ebnyv")
@@ -36,3 +38,11 @@ script = ExtResource("3_mnggp")
 visible = false
 position = Vector2(0, -14)
 texture = SubResource("AtlasTexture_tvh0u")
+
+[node name="Drop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_qi6mc")
+volume_db = 10.0
+
+[node name="Pickup" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_bek3h")
+volume_db = 10.0
