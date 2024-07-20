@@ -1,5 +1,6 @@
 extends Node2D
 @onready var bear = $Bear
+@onready var bear_camera = $Bear/BearCamera
 @onready var tile_map: TileMap = $WorldTileMap
 @onready var bee_container = $BeeContainer
 @onready var hunter_container = $HunterContainer
@@ -49,11 +50,16 @@ const FISH_CHANCE = 0.02
 var CollectablesDisplayManager = preload("res://scenes/CollectablesDisplayManager.tscn")
 
 func start_season(season):
+	current_score = INF
 	tile_map.change_season(season)
 	spawn_display(season)
 	spawn_enemies(season)
 	spawn_collecables(season)
+	if season == 2:
+		bear_camera.get_node("Rain").show()
 	if season == 3:
+		bear_camera.get_node("Rain").hide()
+		bear_camera.get_node("Snow").show()
 		bear.position = tile_map.map_to_local(Vector2(5, 99))
 		print(bear)
 		game_over = true
@@ -187,7 +193,6 @@ func spawn_initial_objects():
 	while regenerate:
 		current_ponds = 0
 		tile_map.clear_layer(1)
-		#clear_enemies()
 		for x in range(10):
 			for y in range(1,100):
 				# Generowanie trawy
@@ -201,15 +206,9 @@ func spawn_initial_objects():
 						current_ponds += 1
 						if current_ponds >= ponds_needed:
 							regenerate = false
-					#elif randf() < HUNTER_CHANCE and is_space_free(x,y):
-						#spawn_hunter(x,y) 
-					#elif randf() < BEE_CHANCE and is_space_free(x, y):
-						#spawn_bee(x, y)
 					elif randf() < TREE_CHANCE and is_space_for_tree(x, y):
 						spawn_tree(x, y)
 				elif y>1:
-					#if randf() < BEE_CHANCE and is_space_free(x, y):
-						#spawn_bee(x, y)
 					if randf() < TREE_CHANCE and is_space_for_tree(x, y):
 						spawn_tree(x, y)
 			spawn_tree(x, 100)
@@ -273,9 +272,11 @@ func clear_collecables():
 		fish.queue_free()
 
 func is_space_for_pond(x: int, y: int) -> bool:
-	for dx in range(3):
-		for dy in range(3):
-			if tile_map.get_cell_source_id(1, Vector2i(x + dx, y + dy)) != -1 and tile_map.get_cell_source_id(0, Vector2i(x + dx, y + dy)) == -1:
+	for dx in range(-2, 5):  # Zwiększamy zakres sprawdzania
+		for dy in range(-2, 5):
+			if x + dx < 0 or x + dx >= 10 or y + dy < 0 or y + dy >= 100:
+				continue  # Pomijamy pola poza mapą
+			if tile_map.get_cell_source_id(1, Vector2i(x + dx, y + dy)) != -1:
 				return false
 	return true
 
